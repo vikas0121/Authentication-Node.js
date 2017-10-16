@@ -1,11 +1,18 @@
-var mysql = require('mysql')
-var connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database : process.env.DB_NAME
-})
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/users";
 
-connection.connect()
+module.exports = (data) => {
+    console.log('message received');
 
-module.exports = connection;
+    MongoClient.connect(url, function (err, db) {
+        if (err) throw err;
+        db.collection('users').insertOne(data, function (err, res) {
+            if (err) {
+                console.log('Error occured in inserting document.')
+                throw err;
+            }
+            console.log("document inserted");
+            db.close();
+        });
+    });
+};
