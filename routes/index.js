@@ -9,7 +9,12 @@ router.get('/', function(req, res, next) {
 
 router.post('/register', function(req, res, next) {
   console.log(req.body);
-  db(req.body);
+  if(req.body.username === '' && req.body.email === '' && req.body.password === '' && req.body.passwordMatch === ''){
+  alert('Please check details.');
+}
+else{
+    db(req.body);
+}
   res.render('index', { title: 'Registration Complete.' });
 });
 
